@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>David — passport book</title>
+  <title>Passport book</title>
   <style>
     :root { --navy:#0b2545; --ink:#1a1a1a; --muted:#5b6470; --paper:#f4f1ea; --card:#fff; --line:#d9d3c7; }
     * { box-sizing:border-box; }
@@ -24,29 +24,15 @@
     .checklist label { display:flex; gap:8px; align-items:flex-start; padding:7px 2px; cursor:pointer; font-size:.95rem; }
     .checklist input { width:16px; height:16px; margin-top:2px; flex:0 0 16px; accent-color:var(--navy); }
     .checklist label:has(input:checked) span { text-decoration:line-through; color:var(--muted); }
-    .lock { position:fixed; inset:0; background:#0b2545; color:#fff; display:flex; align-items:center; justify-content:center; z-index:9; }
-    .lock .box { background:#16345c; padding:20px; border-radius:12px; width:min(360px,90vw); }
-    .lock input { width:100%; padding:8px; margin:10px 0; font:inherit; }
-    .lock button { padding:8px 12px; font:inherit; cursor:pointer; }
-    .hidden { display:none; }
   </style>
 </head>
 <body>
-  <div id="lock" class="lock">
-    <div class="box">
-      <div>Password</div>
-      <input id="pw" type="password" autocomplete="current-password" />
-      <button type="button" id="pwBtn">Open</button>
-      <div id="pwErr" style="color:#f6c6c6;margin-top:8px;font-size:.85rem;"></div>
-    </div>
-  </div>
   <div class="wrap">
     <header>
-      <h1>David — passport book</h1>
+      <h1>Passport book — minor</h1>
       <div class="meta">
-        Today · Mon 21 Sep 2026 · 2:00 PM · arrive 1:50<br>
-        USPS Everglades · 6759 SW 196th Ave, FL 33332<br>
-        Conf WEA307707155 · DAVID ALVES NANTUA CARNEIRO · DOB 13 Dec 2011 · #676967320
+        Mon 21 Sep 2026 · 2:00 PM · arrive 1:50<br>
+        USPS Everglades Branch
       </div>
       <div class="progress-text" id="progressText">0 of 0</div>
       <div class="toolbar">
@@ -58,18 +44,18 @@
     <article class="step">
       <ul class="facts">
         <li>Under-16 DS-11 in person. Both parents. Book only.</li>
-        <li>Fill: <a href="https://pptform.state.gov/" style="color:#1d4e89">pptform.state.gov</a> — print single-sided, do not sign.</li>
-        <li>Pay by check: $100 to U.S. Department of State (memo: name + 13 Dec 2011). $35 to Postmaster.</li>
-        <li>Old book goes with the application. New book 4–6 weeks. Trip 19 Dec.</li>
+        <li>Fill: <a href="https://pptform.state.gov/" style="color:#1d4e89">pptform.state.gov</a> — name as on current passport, print single-sided, do not sign.</li>
+        <li>Pay by check: $100 to U.S. Department of State (memo: applicant name + DOB). $35 to Postmaster.</li>
+        <li>Current book goes with the application. New book 4–6 weeks.</li>
       </ul>
     </article>
     <h2>1. Prep</h2>
     <article class="step">
       <ul class="checklist">
-        <li><label><input type="checkbox" data-id="prep-people"><span>David + both parents going</span></label></li>
+        <li><label><input type="checkbox" data-id="prep-people"><span>Applicant + both parents going</span></label></li>
         <li><label><input type="checkbox" data-id="form-printed"><span>DS-11 printed, unsigned, single-sided</span></label></li>
         <li><label><input type="checkbox" data-id="docs-passport-original"><span>Current passport + data-page copy</span></label></li>
-        <li><label><input type="checkbox" data-id="docs-birth-original"><span>Certified FL birth certificate + copy</span></label></li>
+        <li><label><input type="checkbox" data-id="docs-birth-original"><span>Certified birth certificate + copy</span></label></li>
         <li><label><input type="checkbox" data-id="id-parent1-original"><span>Parent 1 photo ID + front/back copy</span></label></li>
         <li><label><input type="checkbox" data-id="id-parent2-original"><span>Parent 2 photo ID + front/back copy</span></label></li>
         <li><label><input type="checkbox" data-id="photo-packed"><span>2×2 photo</span></label></li>
@@ -80,10 +66,10 @@
     <h2>2. Take today</h2>
     <article class="step">
       <ul class="checklist">
-        <li><label><input type="checkbox" data-id="final-david"><span>David</span></label></li>
+        <li><label><input type="checkbox" data-id="final-david"><span>Applicant</span></label></li>
         <li><label><input type="checkbox" data-id="final-parent1"><span>Parent 1</span></label></li>
         <li><label><input type="checkbox" data-id="final-parent2"><span>Parent 2</span></label></li>
-        <li><label><input type="checkbox" data-id="final-confirmation"><span>Conf WEA307707155</span></label></li>
+        <li><label><input type="checkbox" data-id="final-confirmation"><span>Appointment confirmation</span></label></li>
         <li><label><input type="checkbox" data-id="final-ds11"><span>Unsigned DS-11</span></label></li>
         <li><label><input type="checkbox" data-id="final-passport"><span>Passport + copy</span></label></li>
         <li><label><input type="checkbox" data-id="final-birth"><span>Birth cert + copy</span></label></li>
@@ -96,21 +82,7 @@
   </div>
   <script>
     (function () {
-      var STORAGE_KEY = "checklist:david-carneiro-passport:WEA307707155";
-      var GATE_KEY = STORAGE_KEY + ":gate";
-      var PASS = "WEA307707155";
-      var lock = document.getElementById("lock");
-      var pw = document.getElementById("pw");
-      var pwErr = document.getElementById("pwErr");
-      function unlock() {
-        if ((pw.value || "").trim() === PASS) {
-          try { sessionStorage.setItem(GATE_KEY, "1"); } catch (e) {}
-          lock.classList.add("hidden");
-        } else pwErr.textContent = "Wrong password";
-      }
-      try { if (sessionStorage.getItem(GATE_KEY) === "1") lock.classList.add("hidden"); } catch (e) {}
-      document.getElementById("pwBtn").addEventListener("click", unlock);
-      pw.addEventListener("keydown", function (e) { if (e.key === "Enter") unlock(); });
+      var STORAGE_KEY = "checklist:passport-minor-book";
       var statusEl = document.getElementById("saveStatus");
       var textEl = document.getElementById("progressText");
       function allBoxes() { return Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-id]')); }
